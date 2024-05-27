@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+// Function to perform translation on a point
+void translatePoint(int *x, int *y, int tx, int ty) {
+    *x += tx;
+    *y += ty;
+}
+
+int main() {
+    int x = 10, y = 20; // Initial coordinates of the point
+    int tx1 = 5, ty1 = 10; // First translation vector
+    int tx2 = 15, ty2 = 20; // Second translation vector
+
+    // Coordinates after first translation
+    int x1 = x, y1 = y;
+    translatePoint(&x1, &y1, tx1, ty1);
+
+    // Coordinates after second translation
+    translatePoint(&x1, &y1, tx2, ty2);
+
+    // Coordinates after single translation with combined vector
+    int x2 = x, y2 = y;
+    translatePoint(&x2, &y2, tx1 + tx2, ty1 + ty2);
+
+    // Print results
+    printf("Initial coordinates: (%d, %d)\n", x, y);
+    printf("After first translation: (%d, %d)\n", x + tx1, y + ty1);
+    printf("After second translation: (%d, %d)\n", x + tx1 + tx2, y + ty1 + ty2);
+    printf("After combined translation: (%d, %d)\n", x2, y2);
+
+    // Verify if the two results are the same
+    if (x1 == x2 && y1 == y2) {
+        printf("Two successive translations are additive in nature.\n");
+    } else {
+        printf("Two successive translations are not additive in nature.\n");
+    }
+
+    return 0;
+}

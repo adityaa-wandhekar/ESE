@@ -1,0 +1,91 @@
+#include <graphics.h>
+#include <stdio.h>
+#include <conio.h>
+#include <math.h>
+
+int x, y, x0, y0, x1, y1, dx, dy, k = 1, xinc, yinc, i, x2, y2;
+float m, p, step;
+
+void bresenham(int x1, int y1, int x2, int y2)
+{
+    int x, y, dx, dy, dx2, dy2, p, i;
+    dx = abs(x2 - x1);
+    dy = abs(y2 - y1);
+    dx2 = 2 * dx;
+    dy2 = 2 * dy;
+
+
+    if (dx > dy)
+    {
+        p = dy2 - dx;
+        x=x1;
+        y=y1;
+        putpixel(x, y, WHITE);
+        for (i = 1; i <= dx; i++)
+        {
+            if (p < 0)
+            {
+                x ++;
+                p = p + dy2;
+            }
+            else
+            {
+                x ++;
+                y ++;
+                p = p + dy2 - dx2;
+            }
+            putpixel(x, y, WHITE);
+        }
+    }
+    else
+    {
+        p = dx2 - dy;
+        x=x1;
+        y=y1;
+        for (i = 0; i <= dy; i++)
+        {
+            if (p < 0)
+            {
+                y ++;
+                p = p + dx2;
+                putpixel(x, y, WHITE);
+            }
+            else
+            {
+                x ++;
+                y ++;
+                p = p + dx2 - dy2;
+                putpixel(x, y, WHITE);
+            }
+            
+        }
+    }
+}
+
+int main()
+{
+    int gdriver = DETECT, gmode;
+    int ch;
+    initgraph(&gdriver, &gmode, "c:\\turboc3\\bgi");
+
+    printf("Enter the x0 coordinate:");
+    scanf("%d", &x0);
+    printf("Enter the y0 coordinate:");
+    scanf("%d", &y0);
+    printf("Enter the x1 coordinate:");
+    scanf("%d", &x1);
+    printf("Enter the y1 coordinate:");
+    scanf("%d", &y1);
+    printf("Enter the x2 coordinate:");
+    scanf("%d", &x2);
+    printf("Enter the y2 coordinate:");
+    scanf("%d", &y2);
+
+    cleardevice();  // Clear the graphics screen before drawing
+    bre1(x1, y1, x2, y2);
+    bresenham(x0, y0, x1, y1);
+
+    getch();
+    closegraph();
+    return 0;
+}

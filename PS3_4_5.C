@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<conio.h>
+#include<graphics.h>
+#include<math.h>
+
+void drawcircle(int xc, int yc, int x, int y);
+void bresenhamcircle(int xc, int yc, int r);
+void midcircle(int xc, int yc, int r);
+
+void drawcircle(int xc, int yc, int x, int y) {
+    putpixel(xc + x, yc + y, WHITE);
+    putpixel(xc - x, yc + y, WHITE);
+    putpixel(xc + x, yc - y, WHITE);
+    putpixel(xc - x, yc - y, WHITE);
+    putpixel(xc + y, yc + x, WHITE);
+    putpixel(xc - y, yc + x, WHITE);
+    putpixel(xc + y, yc - x, WHITE);
+    putpixel(xc - y, yc - x, WHITE);
+}
+
+void bresenhamcircle(int xc, int yc, int r) {
+    int x = 0, y = r;
+    int p = 3 - (2 * r); // initial decision parameter
+    drawcircle(xc, yc, x, y);
+    while (y >= x) {
+	x++;
+	if (p > 0) {
+	    y--;
+	    p = p + (4 * (x - y)) + 10; // update the decision parameter
+	} else {
+	    p = p + (4 * x) + 6; // update the decision parameter
+	}
+	drawcircle(xc, yc, x, y);
+    }
+}
+
+void midcircle(int xc, int yc, int r) {
+    int x, y, p;
+    p = 1 - r;
+    x = 0;
+    y = r;
+    drawcircle(xc, yc, x, y);
+    // iteratively generate points on the circle’s circumference
+    while (y >= x) {
+	x++;
+	if (p <= 0) {
+	    p = p + (2 * x) + 3; // update the decision parameter
+	} else {
+	    y--;
+	    p = p + (2 * (x - y)) + 5; // update the decision parameter
+	}
+	drawcircle(xc, yc, x, y);
+    }
+}
+
+int main() {
+    int gd = DETECT, gm, choice, x, y, radius;
+    initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+
+    do {
+	printf("\n1. Draw circle using Midpoint algorithm");
+	printf("\n2. Draw circle using Bresenham's algorithm");
+	printf("\n3. Draw object using mid_point algorithms");
+	printf("\n4. Exit");
+	printf("\nEnter your choice: ");
+	scanf("%d", &choice);
+
+	switch (choice) {
+	    case 1:
+		printf("\nEnter center coordinates (x y): ");
+		scanf("%d %d", &x, &y);
+		printf("\nEnter radius: ");
+		scanf("%d", &radius);
+		midcircle(x, y, radius);
+		break;
+	    case 2:
+		printf("\nEnter center coordinates (x y): ");
+		scanf("%d %d", &x, &y);
+		printf("\nEnter radius: ");
+		scanf("%d", &radius);
+		bresenhamcircle(x, y, radius);
+		break;
+	    case 3:
+		// Draw teddy bear head using both algorithms
+		midcircle(400, 200, 60);  // Head
+		midcircle(400, 200, 60);  // Head
+		midcircle(370, 170, 15);  // Left eye
+		midcircle(430, 170, 15);  // Right eye
+		midcircle(400, 220, 15);  // Nose
+                break;
+            default:
+                printf("Exiting...");
+        }
+    } while (choice != 4);
+
+    getch();
+    closegraph();
+    return 0;
+}
